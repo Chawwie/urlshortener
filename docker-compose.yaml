@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    volumes:
+      - ./src:/churl/src
+      - ./public:/churl/public
+      - ./dist:/churl/dist
+      - ./db:/churl/db
+    ports:
+      - "8000:8000"

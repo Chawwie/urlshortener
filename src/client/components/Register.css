@@ -1,0 +1,17 @@
+
+.register-container {
+  background-color: #247ba0;
+  color: white;
+  padding: 60px 0 60px 0;
+  margin: 0;
+}
+
+.input-container, .list-container {
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.input-container .ui.button {
+  background-color: #ff1654;
+  color: white;
+}
