@@ -1,16 +1,28 @@
 
 const sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./db/test.db');
 
-function dbinit() {
-  var db = new sqlite3.Database('./db/test.db');
-  db.serialize(function() {
-    db.run('CREATE TABLE urls (url TEXT)');
-    var stmt = db.prepare('INSERT INTO urls VALUES (?)');
-    stmt.run('https://www.google.com');
-    stmt.run('https://reddit.com');
-    stmt.run('https://youtube.com');
-    stmt.finalize();
+const DB_PATH = './db/url.db';
+
+var db = new sqlite3.Database(DB_PATH);
+
+function init() {
+  var db = new sqlite3.Database(DB_PATH);
+  db.get('SELECT name FROM sqlite_master WHERE type="table" AND name="urls";', function(err, row) {
+    if (err) {
+
+    } else if (typeof row === 'undefined') {
+
+      /* urls table doesn't exists, create it */
+      db.run('CREATE TABLE urls (url TEXT, created DATETIME, ttl INTEGER, client TEXT)');
+
+      /* Seed url table */
+      var now = Date.now();
+      var stmt = db.prepare('INSERT INTO urls (url,created,ttl,client) VALUES (?,?,?,?)');
+      stmt.run('https://www.google.com', now, 86400, '127.0.0.1');
+      stmt.run('https://www.reddit.com', now, 86400, '127.0.0.1');
+      stmt.run('https://www.youtube.com', now, 86400, '127.0.0.1');
+      stmt.finalize();
+    }
   });
   db.close();
 }
@@ -28,20 +40,6 @@ function getURL(rowid, next) {
   });
 }
 
-function urlExists(url, next) {
-  db.get('SELECT rowid FROM urls where url=?', url, function(err, row) {
-    if (typeof next === "function") {
-      if (err) {
-        next('db error');
-      } else if (typeof row === 'undefined') {
-        next(false);
-      } else {
-        next(true);
-      }
-    }
-  });
-}
-
 function registerURL(url, client, next) {
   row = {
     $url: url,
@@ -53,7 +51,6 @@ function registerURL(url, client, next) {
   db.run('INSERT INTO urls (url,created,ttl,client) VALUES ($url,$created,$ttl,$client)', row, function(err) {
     if (typeof next === "function") {
       if (err) {
-        console.log(err);
         next(null);
       } else {
         next(this.lastID, {
@@ -72,7 +69,8 @@ process.on('exit', function() {
 });
 
 module.exports = {
+  DB_PATH: DB_PATH,
+  init: init,
   getURL: getURL,
-  // urlExists: urlExists,
   registerURL: registerURL,
 };

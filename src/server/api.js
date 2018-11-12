@@ -6,13 +6,7 @@ var router = express.Router();
 var hash = require('./hash');
 var db = require('./db');
 
-/**
- * {
- *    url:
- *    created: 
- *    client:
- * }
- */
+db.init();
 
 function register(req, res, qurl) { 
   try {
@@ -29,13 +23,13 @@ function register(req, res, qurl) {
           created: row.created,
         });    // TODO don't get server hostname from req
       } else {
-        res.send('failed to register url');
+        res.status(400).json({error: 'failed to register url'});
       }
     });
 
   } catch (e) {
     if (e instanceof TypeError) {
-      res.send('Invalid URL');
+      res.status(400).json({error: 'invalid URL'});
     } else {
       throw e;
     }
