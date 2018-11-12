@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Header, List, Transition } from 'semantic-ui-react'
+import { Icon, List, Transition } from 'semantic-ui-react'
 
 import './LinkList.css';
 
@@ -42,7 +42,11 @@ class LinkList extends React.Component {
           { this.props.urls.map((item) => 
             <List.Item key={item.shorturl}>
               <List.Content>
-                <List.Header as='a' href={item.shorturl} target='_blank'>{item.shorturl}</List.Header>
+                <List.Header as='p'>
+                  <a href={item.shorturl} target='_blank'>{item.shorturl}</a>
+                  <Icon name='long arrow alternate right'/>
+                  {item.url}
+                </List.Header>
                 <List.Description>{this.elapsed(item.created)}</List.Description>
               </List.Content>
             </List.Item>

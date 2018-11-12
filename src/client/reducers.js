@@ -5,7 +5,6 @@ import { RECEIVE_SHORT, RECEIVE_ERROR, STATUS_ERROR, STATUS_READY, STATUS_LOADIN
 const urlReducer = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_SHORT:
-      console.log(action.payload);
       return [action.payload, ...state];
     default: 
       return state;

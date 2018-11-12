@@ -25,7 +25,6 @@ app.get('/:shorturl', function(req, res) {
     const id = ids[0];
     db.getURL(id, (url) => { res.redirect(url); });
   } else {
-    console.log(req.params.shorturl);
     res.send('dead link');
   }
 }); 
