@@ -1,7 +1,7 @@
 # URL Shortener
 Vald Performance software engineering test.
 
-![alt text](https://raw.githubusercontent.com/chawwie/urlshortener/hoempage.png)
+![screenshot-homepage](https://raw.githubusercontent.com/chawwie/urlshortener/master/homepage.png)
 
 ## Getting Started
 ```sh
