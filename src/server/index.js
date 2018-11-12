@@ -12,9 +12,8 @@ var app = express();
 app.use(express.urlencoded());
 
 app.use('/api', api);
-
-
 app.use('/', express.static('dist'));
+
 app.get('/', function(req, res) {
   res.sendFile('index.html', { root: path.join(__dirname, "../../dist/ ")});
 });

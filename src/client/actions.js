@@ -1,5 +1,4 @@
 
-
 export const STATUS_READY = 'STATUS_READY';
 export const statusReady = () => {
   return {
