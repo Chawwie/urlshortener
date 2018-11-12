@@ -39,8 +39,6 @@ export const registerURL = (url) => {
   return (dispatch) => {
     dispatch(statusLoading());
 
-    // TODO validate url
-
     var formData = new URLSearchParams();
     formData.append('url', url);
 

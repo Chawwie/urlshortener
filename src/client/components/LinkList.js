@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { List, Transition } from 'semantic-ui-react'
+import { Header, List, Transition } from 'semantic-ui-react'
 
 import './LinkList.css';
 
@@ -38,7 +38,6 @@ class LinkList extends React.Component {
   render() {
     return (
       <div className="list-container">
-        {/* <List divided relaxed> */}
         <Transition.Group as={List} duration={200} size="large" divided relaxed="very" verticalAlign='middle'>
           { this.props.urls.map((item) => 
             <List.Item key={item.shorturl}>
@@ -49,7 +48,6 @@ class LinkList extends React.Component {
             </List.Item>
           )}
         </Transition.Group>
-        {/* </List> */}
       </div>
     );
   }

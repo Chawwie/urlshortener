@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { registerURL, STATUS_ERROR, STATUS_LOADING } from '../actions';
+import { registerURL, STATUS_ERROR, STATUS_LOADING, STATUS_READY } from '../actions';
 
 import { List, Container, Button, Form, Header, Message } from 'semantic-ui-react'
 
