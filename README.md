@@ -5,6 +5,8 @@ Vald Performance software engineering test.
 
 ## Getting Started
 ```sh
+git clone https://github.com/Chawwie/urlshortener.git
+cd urlshortener
 docker-compose build && docker-compose up
 ```
 
