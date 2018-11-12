@@ -2,6 +2,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 const DB_PATH = './db/url.db';
+const URL_REGEX = new RegExp(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/);
 
 var db = new sqlite3.Database(DB_PATH);
 
@@ -41,27 +42,35 @@ function getURL(rowid, next) {
 }
 
 function registerURL(url, client, next) {
-  row = {
-    $url: url,
-    $created: Date.now(),
-    $ttl: 86400,
-    $client: client
-  }
-
-  db.run('INSERT INTO urls (url,created,ttl,client) VALUES ($url,$created,$ttl,$client)', row, function(err) {
-    if (typeof next === "function") {
-      if (err) {
-        next(null);
-      } else {
-        next(this.lastID, {
-          url: url,
-          created: row.$created,
-          ttl: row.$ttl,
-          client: row.$client,
-        });
-      }
+  if (URL_REGEX.test(url)) {
+    if (!url.match(/^[a-zA-Z]+:\/\//)) {
+        url = 'http://' + url;
     }
-  });
+
+    row = {
+      $url: url,
+      $created: Date.now(),
+      $ttl: 86400,
+      $client: client
+    }
+
+    db.run('INSERT INTO urls (url,created,ttl,client) VALUES ($url,$created,$ttl,$client)', row, function(err) {
+      if (typeof next === "function") {
+        if (err) {
+          next(null);
+        } else {
+          next(this.lastID, {
+            url: url,
+            created: row.$created,
+            ttl: row.$ttl,
+            client: row.$client,
+          });
+        }
+      }
+    });
+  } else {
+    next(null);
+  }
 }
 
 process.on('exit', function() {
